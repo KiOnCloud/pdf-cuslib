@@ -35,6 +35,16 @@ import { NgxExtendedPdfViewerModule, NgxExtendedPdfViewerComponent } from 'ngx-e
     :host ::ng-deep ngx-extended-pdf-viewer {
       cursor: text !important;
     }
+    /* Hide built-in editor toolbar/overlay */
+    :host ::ng-deep #editorModeButtons,
+    :host ::ng-deep #editorModeSeparator,
+    :host ::ng-deep .editorParamsToolbar,
+    :host ::ng-deep #editorHighlightParamsToolbar,
+    :host ::ng-deep #editorFreeTextParamsToolbar,
+    :host ::ng-deep #editorInkParamsToolbar,
+    :host ::ng-deep #editorStampParamsToolbar {
+      display: none !important;
+    }
   `]
 })
 export class PdfViewerComponent {

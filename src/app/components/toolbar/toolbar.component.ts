@@ -44,6 +44,13 @@ import { PdfStateService } from '../../core/pdf-state.service';
           [disabled]="!isLoaded()">
           Highlight
         </button>
+        @if (highlightMode()) {
+          <label>Color:</label>
+          <input type="color"
+            [(ngModel)]="highlightColor"
+            (change)="onHighlightColorChange()"
+            title="Highlight color" />
+        }
       </div>
     </div>
   `,
@@ -60,7 +67,23 @@ import { PdfStateService } from '../../core/pdf-state.service';
     button { padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; }
     button:disabled { opacity: 0.5; cursor: not-allowed; }
     button.active { background: #007bff; color: white; }
-    input { width: 60px; padding: 0.5rem; }
+    input[type="number"] { width: 60px; padding: 0.5rem; }
+    input[type="color"] {
+      width: 40px;
+      height: 35px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    input[type="range"] {
+      width: 100px;
+      cursor: pointer;
+    }
+    label {
+      font-size: 0.9rem;
+      color: #555;
+      margin-left: 0.5rem;
+    }
   `]
 })
 export class ToolbarComponent {
@@ -73,6 +96,9 @@ export class ToolbarComponent {
   zoomLevel = this.stateService.zoomLevelSignal;
   highlightMode = signal(false);
   pageInput = 1;
+
+  // Highlight settings
+  highlightColor = '#ffff00'; // Default yellow 
 
   zoomIn() { this.viewerService.zoomIn(); }
   zoomOut() { this.viewerService.zoomOut(); }
@@ -95,8 +121,18 @@ export class ToolbarComponent {
 
   onPrint() { this.viewerService.print(); }
   onDownload() { this.viewerService.downloadPDF('document.pdf'); }
+
   toggleHighlight() {
     this.highlightMode.update(v => !v);
-    this.viewerService.toggleHighlightMode(this.highlightMode());
+    if (this.highlightMode()) {
+      this.viewerService.toggleHighlightMode(true);
+      this.viewerService.setHighlightColor(this.highlightColor);
+    } else {
+      this.viewerService.toggleHighlightMode(false);
+    }
+  }
+
+  onHighlightColorChange() {
+    this.viewerService.setHighlightColor(this.highlightColor);
   }
 }

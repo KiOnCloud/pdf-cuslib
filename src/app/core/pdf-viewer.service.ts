@@ -58,6 +58,11 @@ export class PdfViewerService {
     }
   }
 
+  setHighlightColor(color: string): void {
+    // Use the editorHighlightColor property from ngx-extended-pdf-viewer
+    (this.pdfService as any).editorHighlightColor = color;
+  }
+
   async addHighlight(params: any): Promise<void> {
     // Highlight functionality - to be implemented based on specific requirements
     console.log('Highlight feature to be implemented', params);
