@@ -46,10 +46,41 @@ import { PdfStateService } from '../../core/pdf-state.service';
         </button>
         @if (highlightMode()) {
           <label>Color:</label>
-          <input type="color"
-            [(ngModel)]="highlightColor"
-            (change)="onHighlightColorChange()"
-            title="Highlight color" />
+          <button
+            class="color-swatch"
+            [class.active]="highlightColor === '#FFFF98'"
+            [style.background-color]="'#FFFF98'"
+            (click)="selectColor('#FFFF98')"
+            title="Yellow">
+          </button>
+          <button
+            class="color-swatch"
+            [class.active]="highlightColor === '#53FFBC'"
+            [style.background-color]="'#53FFBC'"
+            (click)="selectColor('#53FFBC')"
+            title="Green">
+          </button>
+          <button
+            class="color-swatch"
+            [class.active]="highlightColor === '#80EBFF'"
+            [style.background-color]="'#80EBFF'"
+            (click)="selectColor('#80EBFF')"
+            title="Cyan">
+          </button>
+          <button
+            class="color-swatch"
+            [class.active]="highlightColor === '#FFCBE6'"
+            [style.background-color]="'#FFCBE6'"
+            (click)="selectColor('#FFCBE6')"
+            title="Pink">
+          </button>
+          <button
+            class="color-swatch"
+            [class.active]="highlightColor === '#FF4F5F'"
+            [style.background-color]="'#FF4F5F'"
+            (click)="selectColor('#FF4F5F')"
+            title="Red">
+          </button>
         }
       </div>
     </div>
@@ -67,14 +98,25 @@ import { PdfStateService } from '../../core/pdf-state.service';
     button { padding: 0.5rem 1rem; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; }
     button:disabled { opacity: 0.5; cursor: not-allowed; }
     button.active { background: #007bff; color: white; }
-    input[type="number"] { width: 60px; padding: 0.5rem; }
-    input[type="color"] {
-      width: 40px;
-      height: 35px;
-      border: 1px solid #ccc;
+    button.color-swatch {
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border: 2px solid #ccc;
       border-radius: 4px;
       cursor: pointer;
+      transition: all 0.2s;
     }
+    button.color-swatch:hover {
+      transform: scale(1.1);
+      border-color: #666;
+    }
+    button.color-swatch.active {
+      border: 3px solid #007bff;
+      transform: scale(1.15);
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+    input[type="number"] { width: 60px; padding: 0.5rem; }
     input[type="range"] {
       width: 100px;
       cursor: pointer;
@@ -98,7 +140,8 @@ export class ToolbarComponent {
   pageInput = 1;
 
   // Highlight settings
-  highlightColor = '#ffff00'; // Default yellow 
+  highlightColor = '#FFFF98'; // Default yellow
+  highlightOpacity = 0.5; // Default 50%
 
   zoomIn() { this.viewerService.zoomIn(); }
   zoomOut() { this.viewerService.zoomOut(); }
@@ -132,7 +175,8 @@ export class ToolbarComponent {
     }
   }
 
-  onHighlightColorChange() {
-    this.viewerService.setHighlightColor(this.highlightColor);
+  selectColor(color: string) {
+    this.highlightColor = color;
+    this.viewerService.setHighlightColor(color);
   }
 }
