@@ -48,6 +48,16 @@ export class PdfViewerService {
     }
   }
 
+  toggleHighlightMode(enabled: boolean): void {
+    if (enabled) {
+      // Switch to highlight editor mode (mode 9 is highlight in PDF.js)
+      this.pdfService.switchAnnotationEdtorMode(9);
+    } else {
+      // Switch to no editor mode (mode 0)
+      this.pdfService.switchAnnotationEdtorMode(0);
+    }
+  }
+
   async addHighlight(params: any): Promise<void> {
     // Highlight functionality - to be implemented based on specific requirements
     console.log('Highlight feature to be implemented', params);

@@ -95,5 +95,8 @@ export class ToolbarComponent {
 
   onPrint() { this.viewerService.print(); }
   onDownload() { this.viewerService.downloadPDF('document.pdf'); }
-  toggleHighlight() { this.highlightMode.update(v => !v); }
+  toggleHighlight() {
+    this.highlightMode.update(v => !v);
+    this.viewerService.toggleHighlightMode(this.highlightMode());
+  }
 }
