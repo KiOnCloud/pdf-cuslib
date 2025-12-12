@@ -11,6 +11,10 @@ import { NgxExtendedPdfViewerModule, NgxExtendedPdfViewerComponent } from 'ngx-e
         #pdfViewer
         [src]="pdfSource()!"
         [showToolbar]="false"
+        [textLayer]="true"
+        [handTool]="false"
+        [showHandToolButton]="false"
+        [enableDragAndDrop]="false"
         (pagesLoaded)="onPagesLoaded($event)"
         (pageRendered)="onPageRendered($event)"
       />
@@ -21,6 +25,15 @@ import { NgxExtendedPdfViewerModule, NgxExtendedPdfViewerComponent } from 'ngx-e
       display: block;
       height: 100%;
       width: 100%;
+    }
+    :host ::ng-deep .textLayer {
+      cursor: text !important;
+    }
+    :host ::ng-deep .page {
+      cursor: text !important;
+    }
+    :host ::ng-deep ngx-extended-pdf-viewer {
+      cursor: text !important;
     }
   `]
 })
