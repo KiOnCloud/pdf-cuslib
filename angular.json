@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular21-custom-pdf-demo": {
+    "pdf-cuslib": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -61,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "angular21-custom-pdf-demo:build:production"
+              "buildTarget": "pdf-cuslib:build:production"
             },
             "development": {
-              "buildTarget": "angular21-custom-pdf-demo:build:development"
+              "buildTarget": "pdf-cuslib:build:development"
             }
           },
           "defaultConfiguration": "development"
