@@ -67,4 +67,10 @@ export class PdfViewerService {
     // Highlight functionality - to be implemented based on specific requirements
     console.log('Highlight feature to be implemented', params);
   }
+
+  getSerializedAnnotations() {
+    const serialized = this.pdfService.getSerializedAnnotations();
+    console.log('Serialized Annotations:', serialized);
+    return serialized;
+  }
 }

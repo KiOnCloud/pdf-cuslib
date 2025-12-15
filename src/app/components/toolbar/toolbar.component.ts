@@ -34,6 +34,7 @@ import { PdfStateService } from '../../core/pdf-state.service';
       <div class="toolbar-group">
         <button (click)="onPrint()" [disabled]="!isLoaded()">Print</button>
         <button (click)="onDownload()" [disabled]="!isLoaded()">Download</button>
+        <button (click)="getSerializedAnnotations()" [disabled]="!isLoaded()">Export</button>
       </div>
 
       <!-- Annotations -->
@@ -121,6 +122,14 @@ import { PdfStateService } from '../../core/pdf-state.service';
       width: 100px;
       cursor: pointer;
     }
+    select {
+      padding: 0.4rem 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: white;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
     label {
       font-size: 0.9rem;
       color: #555;
@@ -164,6 +173,7 @@ export class ToolbarComponent {
 
   onPrint() { this.viewerService.print(); }
   onDownload() { this.viewerService.downloadPDF('document.pdf'); }
+  getSerializedAnnotations() { this.viewerService.getSerializedAnnotations(); }
 
   toggleHighlight() {
     this.highlightMode.update(v => !v);
