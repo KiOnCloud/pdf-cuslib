@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install)"
+      "Bash(npm install)",
+      "WebSearch",
+      "Bash(ls:*)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }

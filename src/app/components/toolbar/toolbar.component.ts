@@ -34,7 +34,9 @@ import { PdfStateService } from '../../core/pdf-state.service';
       <div class="toolbar-group">
         <button (click)="onPrint()" [disabled]="!isLoaded()">Print</button>
         <button (click)="onDownload()" [disabled]="!isLoaded()">Download</button>
-        <button (click)="getSerializedAnnotations()" [disabled]="!isLoaded()">Export</button>
+        <button (click)="onExportAnnotations()" [disabled]="!isLoaded()">Export</button>
+        <button (click)="fileInput.click()" [disabled]="!isLoaded()">Import</button>
+        <input #fileInput type="file" accept=".json" hidden (change)="onImportAnnotations($event)" />
       </div>
 
       <!-- Annotations -->
@@ -173,7 +175,34 @@ export class ToolbarComponent {
 
   onPrint() { this.viewerService.print(); }
   onDownload() { this.viewerService.downloadPDF('document.pdf'); }
-  getSerializedAnnotations() { this.viewerService.getSerializedAnnotations(); }
+  onExportAnnotations() { this.viewerService.getSerializedAnnotations(); }
+
+  async onImportAnnotations(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    // Validate file type
+    if (!file.name.endsWith('.json')) {
+      alert('Please select a JSON file');
+      input.value = ''; // Reset input
+      return;
+    }
+
+    try {
+    //   this.viewerService.clearAllAnnotations();
+      await this.viewerService.importAnnotations(file);
+    } catch (error) {
+      console.error('Import error:', error);
+
+    } finally {
+      // Reset input to allow importing the same file again
+      input.value = '';
+    }
+  }
 
   toggleHighlight() {
     this.highlightMode.update(v => !v);
