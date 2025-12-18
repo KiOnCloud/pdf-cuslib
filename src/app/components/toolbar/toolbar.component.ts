@@ -96,7 +96,7 @@ import { PdfStateService } from '../../core/pdf-state.service';
           Text Box
         </button>
         @if (textBoxMode()) {
-          <label>Font:</label>
+          <label>Size:</label>
           <select
             [value]="textBoxFontSize"
             (change)="selectFontSize($event)"
