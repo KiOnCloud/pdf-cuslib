@@ -86,6 +86,69 @@ import { PdfStateService } from '../../core/pdf-state.service';
           </button>
         }
       </div>
+
+      <!-- Text Box Annotations -->
+      <div class="toolbar-group">
+        <button
+          (click)="toggleTextBox()"
+          [class.active]="textBoxMode()"
+          [disabled]="!isLoaded()">
+          Text Box
+        </button>
+        @if (textBoxMode()) {
+          <label>Font:</label>
+          <select
+            [value]="textBoxFontSize"
+            (change)="selectFontSize($event)"
+            title="Font Size">
+            <option value="10">10pt</option>
+            <option value="12">12pt</option>
+            <option value="14">14pt</option>
+            <option value="16">16pt</option>
+            <option value="18">18pt</option>
+            <option value="20">20pt</option>
+            <option value="24">24pt</option>
+            <option value="28">28pt</option>
+            <option value="32">32pt</option>
+          </select>
+          <label>Color:</label>
+          <button
+            class="color-swatch"
+            [class.active]="textBoxFontColor === '#000000'"
+            [style.background-color]="'#000000'"
+            (click)="selectFontColor('#000000')"
+            title="Black">
+          </button>
+          <button
+            class="color-swatch"
+            [class.active]="textBoxFontColor === '#FF0000'"
+            [style.background-color]="'#FF0000'"
+            (click)="selectFontColor('#FF0000')"
+            title="Red">
+          </button>
+          <button
+            class="color-swatch"
+            [class.active]="textBoxFontColor === '#0000FF'"
+            [style.background-color]="'#0000FF'"
+            (click)="selectFontColor('#0000FF')"
+            title="Blue">
+          </button>
+          <button
+            class="color-swatch"
+            [class.active]="textBoxFontColor === '#008000'"
+            [style.background-color]="'#008000'"
+            (click)="selectFontColor('#008000')"
+            title="Green">
+          </button>
+          <button
+            class="color-swatch"
+            [class.active]="textBoxFontColor === '#FFA500'"
+            [style.background-color]="'#FFA500'"
+            (click)="selectFontColor('#FFA500')"
+            title="Orange">
+          </button>
+        }
+      </div>
     </div>
   `,
   styles: [`
@@ -154,6 +217,13 @@ export class ToolbarComponent {
   highlightColor = '#FFFF98'; // Default yellow
   highlightOpacity = 0.5; // Default 50%
 
+  // Text box mode state
+  textBoxMode = signal(false);
+
+  // Text box settings
+  textBoxFontColor = '#000000'; // Default black
+  textBoxFontSize = 16; // Default 16pt
+
   zoomIn() { this.viewerService.zoomIn(); }
   zoomOut() { this.viewerService.zoomOut(); }
 
@@ -205,11 +275,16 @@ export class ToolbarComponent {
   }
 
   toggleHighlight() {
-    this.highlightMode.update(v => !v);
-    if (this.highlightMode()) {
+    const wasActive = this.highlightMode();
+    if (!wasActive) {
+      // Deactivate all other modes before activating highlight
+      this.deactivateAllModes();
+      this.highlightMode.set(true);
       this.viewerService.toggleHighlightMode(true);
       this.viewerService.setHighlightColor(this.highlightColor);
     } else {
+      // Deactivate highlight mode
+      this.highlightMode.set(false);
       this.viewerService.toggleHighlightMode(false);
     }
   }
@@ -217,5 +292,39 @@ export class ToolbarComponent {
   selectColor(color: string) {
     this.highlightColor = color;
     this.viewerService.setHighlightColor(color);
+  }
+
+  // Helper method to deactivate all annotation modes
+  private deactivateAllModes() {
+    this.highlightMode.set(false);
+    this.textBoxMode.set(false);
+    // Add more modes here as they are implemented
+  }
+
+  toggleTextBox() {
+    const wasActive = this.textBoxMode();
+    if (!wasActive) {
+      // Deactivate all other modes before activating text box
+      this.deactivateAllModes();
+      this.textBoxMode.set(true);
+      this.viewerService.toggleTextBoxMode(true);
+      this.viewerService.setTextBoxFontColor(this.textBoxFontColor);
+      this.viewerService.setTextBoxFontSize(this.textBoxFontSize);
+    } else {
+      // Deactivate text box mode
+      this.textBoxMode.set(false);
+      this.viewerService.toggleTextBoxMode(false);
+    }
+  }
+
+  selectFontColor(color: string) {
+    this.textBoxFontColor = color;
+    this.viewerService.setTextBoxFontColor(color);
+  }
+
+  selectFontSize(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.textBoxFontSize = Number(select.value);
+    this.viewerService.setTextBoxFontSize(this.textBoxFontSize);
   }
 }

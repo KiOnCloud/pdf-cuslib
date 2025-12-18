@@ -4,7 +4,8 @@
       "Bash(npm install)",
       "WebSearch",
       "Bash(ls:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(dir /s /b \"D:\\\\Kien_TT\\\\Sources\\\\pdf-cuslib\\\\src\\\\app\\\\*.ts\")"
     ]
   }
 }

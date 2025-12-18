@@ -63,6 +63,26 @@ export class PdfViewerService {
     (this.pdfService as any).editorHighlightColor = color;
   }
 
+  toggleTextBoxMode(enabled: boolean): void {
+    if (enabled) {
+      // Switch to FreeText editor mode (mode 3 is FreeText in PDF.js)
+      this.pdfService.switchAnnotationEdtorMode(3);
+    } else {
+      // Switch to no editor mode (mode 0)
+      this.pdfService.switchAnnotationEdtorMode(0);
+    }
+  }
+
+  setTextBoxFontColor(color: string): void {
+    // Set the font color for FreeText annotations
+    this.pdfService.editorFontColor = color;
+  }
+
+  setTextBoxFontSize(size: number): void {
+    // Set the font size for FreeText annotations
+    this.pdfService.editorFontSize = size;
+  }
+
   async addHighlight(params: any): Promise<void> {
     // Highlight functionality - to be implemented based on specific requirements
     console.log('Highlight feature to be implemented', params);
