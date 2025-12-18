@@ -27,6 +27,12 @@ import { PdfStateService } from '../../core/pdf-state.service';
         </button>
       </div>
 
+      <!-- Undo/Redo -->
+      <div class="toolbar-group">
+        <button (click)="onUndo()" [disabled]="!isLoaded()" title="Undo">Undo</button>
+        <button (click)="onRedo()" [disabled]="!isLoaded()" title="Redo">Redo</button>
+      </div>
+
       <!-- Page Navigation -->
       <div class="toolbar-group">
         <button (click)="previousPage()" [disabled]="!isLoaded()">Previous</button>
@@ -239,6 +245,10 @@ export class ToolbarComponent {
   zoomOut() { this.viewerService.zoomOut(); }
 
   toggleHandTool() { this.viewerService.toggleHandToolMode(); }
+
+  onUndo() { this.viewerService.undo(); }
+
+  onRedo() { this.viewerService.redo(); }
 
   previousPage() {
     const newPage = Math.max(1, this.currentPage() - 1);

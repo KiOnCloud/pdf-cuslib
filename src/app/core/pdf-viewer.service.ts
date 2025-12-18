@@ -1,11 +1,19 @@
-import { Injectable, inject } from '@angular/core';
-import { NgxExtendedPdfViewerService } from 'ngx-extended-pdf-viewer';
+import { Injectable, inject, effect } from '@angular/core';
+import { NgxExtendedPdfViewerService, PDFNotificationService } from 'ngx-extended-pdf-viewer';
 import { PdfStateService } from './pdf-state.service';
 
 @Injectable({ providedIn: 'root' })
 export class PdfViewerService {
   private pdfService = inject(NgxExtendedPdfViewerService);
   private stateService = inject(PdfStateService);
+  private notificationService = inject(PDFNotificationService);
+  private PDFViewerApplication: any;
+
+  constructor() {
+    effect(() => {
+      this.PDFViewerApplication = this.notificationService.onPDFJSInitSignal();
+    });
+  }
 
   navigateToPage(pageNumber: number): void {
     this.pdfService.scrollPageIntoView(pageNumber);
@@ -86,6 +94,40 @@ export class PdfViewerService {
   toggleHandToolMode(): void {
     const currentMode = this.stateService.handToolModeSignal();
     this.stateService.setHandToolMode(!currentMode);
+  }
+
+  undo(): void {
+    try {
+      // Try multiple paths to access the annotationEditorUIManager
+      const uiManager = this.PDFViewerApplication?.pdfViewer?._layerProperties?.annotationEditorUIManager
+        || this.PDFViewerApplication?.annotationEditorUIManager
+        || this.PDFViewerApplication?.pdfDocument?.annotationEditorUIManager;
+
+      if (uiManager && typeof uiManager.undo === 'function') {
+        uiManager.undo();
+      } else {
+        console.warn('Undo manager not available');
+      }
+    } catch (error) {
+      console.error('Error executing undo:', error);
+    }
+  }
+
+  redo(): void {
+    try {
+      // Try multiple paths to access the annotationEditorUIManager
+      const uiManager = this.PDFViewerApplication?.pdfViewer?._layerProperties?.annotationEditorUIManager
+        || this.PDFViewerApplication?.annotationEditorUIManager
+        || this.PDFViewerApplication?.pdfDocument?.annotationEditorUIManager;
+
+      if (uiManager && typeof uiManager.redo === 'function') {
+        uiManager.redo();
+      } else {
+        console.warn('Redo manager not available');
+      }
+    } catch (error) {
+      console.error('Error executing redo:', error);
+    }
   }
 
   async addHighlight(params: any): Promise<void> {
