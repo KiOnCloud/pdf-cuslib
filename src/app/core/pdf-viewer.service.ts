@@ -83,6 +83,11 @@ export class PdfViewerService {
     this.pdfService.editorFontSize = size;
   }
 
+  toggleHandToolMode(): void {
+    const currentMode = this.stateService.handToolModeSignal();
+    this.stateService.setHandToolMode(!currentMode);
+  }
+
   async addHighlight(params: any): Promise<void> {
     // Highlight functionality - to be implemented based on specific requirements
     console.log('Highlight feature to be implemented', params);

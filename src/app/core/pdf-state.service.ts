@@ -7,6 +7,7 @@ export class PdfStateService {
   totalPagesSignal: WritableSignal<number> = signal(0);
   zoomLevelSignal: WritableSignal<number> = signal(100);
   isLoadedSignal: WritableSignal<boolean> = signal(false);
+  handToolModeSignal: WritableSignal<boolean> = signal(true);
 
   loadPDF(blob: Blob): void {
     this.sourceSignal.set(blob);
@@ -23,5 +24,9 @@ export class PdfStateService {
 
   setZoomLevel(zoom: number): void {
     this.zoomLevelSignal.set(zoom);
+  }
+
+  setHandToolMode(enabled: boolean): void {
+    this.handToolModeSignal.set(enabled);
   }
 }

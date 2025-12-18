@@ -17,6 +17,16 @@ import { PdfStateService } from '../../core/pdf-state.service';
         <button (click)="zoomIn()" [disabled]="!isLoaded()">+</button>
       </div>
 
+      <!-- Hand Tool / Select Mode -->
+      <div class="toolbar-group">
+        <button
+          (click)="toggleHandTool()"
+          [class.active]="handToolMode()"
+          [disabled]="!isLoaded()">
+          {{ handToolMode() ? 'Hand Tool' : 'Select Mode' }}
+        </button>
+      </div>
+
       <!-- Page Navigation -->
       <div class="toolbar-group">
         <button (click)="previousPage()" [disabled]="!isLoaded()">Previous</button>
@@ -210,6 +220,7 @@ export class ToolbarComponent {
   currentPage = this.stateService.currentPageSignal;
   totalPages = this.stateService.totalPagesSignal;
   zoomLevel = this.stateService.zoomLevelSignal;
+  handToolMode = this.stateService.handToolModeSignal;
   highlightMode = signal(false);
   pageInput = 1;
 
@@ -226,6 +237,8 @@ export class ToolbarComponent {
 
   zoomIn() { this.viewerService.zoomIn(); }
   zoomOut() { this.viewerService.zoomOut(); }
+
+  toggleHandTool() { this.viewerService.toggleHandToolMode(); }
 
   previousPage() {
     const newPage = Math.max(1, this.currentPage() - 1);

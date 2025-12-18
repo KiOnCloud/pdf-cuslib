@@ -1,5 +1,6 @@
-import { Component, input, output, ViewChild } from '@angular/core';
+import { Component, input, output, ViewChild, inject } from '@angular/core';
 import { NgxExtendedPdfViewerModule, NgxExtendedPdfViewerComponent } from 'ngx-extended-pdf-viewer';
+import { PdfStateService } from '../../core/pdf-state.service';
 
 @Component({
   selector: 'app-pdf-viewer',
@@ -12,7 +13,7 @@ import { NgxExtendedPdfViewerModule, NgxExtendedPdfViewerComponent } from 'ngx-e
         [src]="pdfSource()!"
         [showToolbar]="false"
         [textLayer]="true"
-        [handTool]="false"
+        [handTool]="handToolMode()"
         [showHandToolButton]="false"
         [enableDragAndDrop]="false"
         (pagesLoaded)="onPagesLoaded($event)"
@@ -25,6 +26,28 @@ import { NgxExtendedPdfViewerModule, NgxExtendedPdfViewerComponent } from 'ngx-e
       display: block;
       height: 100%;
       width: 100%;
+    }
+    .pdf-container {
+      height: 100%;
+      width: 100%;
+      position: relative;
+    }
+    .mode-toggle-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .mode-toggle-btn:hover {
+      background-color: #0056b3;
     }
     :host ::ng-deep .textLayer {
       cursor: text !important;
@@ -48,11 +71,15 @@ import { NgxExtendedPdfViewerModule, NgxExtendedPdfViewerComponent } from 'ngx-e
   `]
 })
 export class PdfViewerComponent {
+  private stateService = inject(PdfStateService);
+
   pdfSource = input.required<Blob | null>();
   pagesLoaded = output<number>();
   pageRendered = output<number>();
 
   @ViewChild('pdfViewer') pdfViewerRef!: NgxExtendedPdfViewerComponent;
+
+  handToolMode = this.stateService.handToolModeSignal;
 
   onPagesLoaded(event: any): void {
     this.pagesLoaded.emit(event.pagesCount);
@@ -60,5 +87,9 @@ export class PdfViewerComponent {
 
   onPageRendered(event: any): void {
     this.pageRendered.emit(event.pageNumber);
+  }
+
+  toggleMode(): void {
+    this.stateService.setHandToolMode(!this.handToolMode());
   }
 }
