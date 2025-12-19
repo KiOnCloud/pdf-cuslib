@@ -98,4 +98,37 @@
         </button>
         }
     </div>
+
+    <!-- Ink Drawing Annotations -->
+    <div class="toolbar-group">
+        <button (click)="toggleInk()" [class.active]="inkMode()" [disabled]="!isLoaded()">
+            Draw
+        </button>
+        @if (inkMode()) {
+        <label>Thickness:</label>
+        <select [value]="inkThickness" (change)="selectInkThickness($event)" title="Stroke Thickness">
+            <option value="1">Thin</option>
+            <option value="2">Medium</option>
+            <option value="3">Thick</option>
+            <option value="4">Very Thick</option>
+            <option value="5">Extra Thick</option>
+        </select>
+        <label>Color:</label>
+        <button class="color-swatch" [class.active]="inkColor === '#000000'"
+            [style.background-color]="'#000000'" (click)="selectInkColor('#000000')" title="Black">
+        </button>
+        <button class="color-swatch" [class.active]="inkColor === '#FF0000'"
+            [style.background-color]="'#FF0000'" (click)="selectInkColor('#FF0000')" title="Red">
+        </button>
+        <button class="color-swatch" [class.active]="inkColor === '#0000FF'"
+            [style.background-color]="'#0000FF'" (click)="selectInkColor('#0000FF')" title="Blue">
+        </button>
+        <button class="color-swatch" [class.active]="inkColor === '#008000'"
+            [style.background-color]="'#008000'" (click)="selectInkColor('#008000')" title="Green">
+        </button>
+        <button class="color-swatch" [class.active]="inkColor === '#FFA500'"
+            [style.background-color]="'#FFA500'" (click)="selectInkColor('#FFA500')" title="Orange">
+        </button>
+        }
+    </div>
 </div>

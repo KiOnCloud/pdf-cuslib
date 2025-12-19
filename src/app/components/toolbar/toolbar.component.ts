@@ -34,6 +34,13 @@ export class ToolbarComponent {
   textBoxFontColor = '#000000'; // Default black
   textBoxFontSize = 16; // Default 16pt
 
+  // Ink drawing mode state
+  inkMode = signal(false);
+
+  // Ink drawing settings
+  inkColor = '#000000'; // Default black
+  inkThickness = 2; // Default medium (1-5 scale)
+
   zoomIn() { this.viewerService.zoomIn(); }
   zoomOut() { this.viewerService.zoomOut(); }
 
@@ -114,6 +121,7 @@ export class ToolbarComponent {
   private deactivateAllModes() {
     this.highlightMode.set(false);
     this.textBoxMode.set(false);
+    this.inkMode.set(false);
     // Add more modes here as they are implemented
   }
 
@@ -142,5 +150,35 @@ export class ToolbarComponent {
     const select = event.target as HTMLSelectElement;
     this.textBoxFontSize = Number(select.value);
     this.viewerService.setTextBoxFontSize(this.textBoxFontSize);
+  }
+
+  toggleInk() {
+    const wasActive = this.inkMode();
+    if (!wasActive) {
+      // Deactivate all other modes before activating ink
+      this.deactivateAllModes();
+      this.inkMode.set(true);
+      this.viewerService.toggleInkMode(true);
+      // Set color and thickness after mode is active
+      setTimeout(() => {
+        this.viewerService.setInkColor(this.inkColor);
+        this.viewerService.setInkThickness(this.inkThickness);
+      }, 10);
+    } else {
+      // Deactivate ink mode
+      this.inkMode.set(false);
+      this.viewerService.toggleInkMode(false);
+    }
+  }
+
+  selectInkColor(color: string) {
+    this.inkColor = color;
+    this.viewerService.setInkColor(color);
+  }
+
+  selectInkThickness(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.inkThickness = Number(select.value);
+    this.viewerService.setInkThickness(this.inkThickness);
   }
 }

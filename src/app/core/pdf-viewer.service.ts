@@ -91,6 +91,26 @@ export class PdfViewerService {
     this.pdfService.editorFontSize = size;
   }
 
+  toggleInkMode(enabled: boolean): void {
+    if (enabled) {
+      // Switch to Ink editor mode (mode 15 is Ink in PDF.js)
+      this.pdfService.switchAnnotationEdtorMode(15);
+    } else {
+      // Switch to no editor mode (mode 0)
+      this.pdfService.switchAnnotationEdtorMode(0);
+    }
+  }
+
+  setInkColor(color: string): void {
+    // Use the editorInkColor property from ngx-extended-pdf-viewer
+    (this.pdfService as any).editorInkColor = color;
+  }
+
+  setInkThickness(thickness: number): void {
+    // Set the stroke thickness for Ink annotations
+    (this.pdfService as any).editorInkThickness = thickness;
+  }
+
   toggleHandToolMode(): void {
     const currentMode = this.stateService.handToolModeSignal();
     this.stateService.setHandToolMode(!currentMode);
