@@ -1,0 +1,14 @@
+<div class="sidebar">
+    <h3>Thumbnails</h3>
+    <div class="thumbnails-container">
+        @for (page of pages(); track page) {
+        <div class="thumbnail" [class.active]="currentPage() === page" (click)="selectPage(page)">
+            @if (thumbnails()[page]) {
+            <img [src]="thumbnails()[page]" [alt]="'Page ' + page" />
+            } @else {
+            <div class="placeholder">{{ page }}</div>
+            }
+        </div>
+        }
+    </div>
+</div>
