@@ -1,0 +1,53 @@
+:host {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.pdf-container {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.mode-toggle-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.mode-toggle-btn:hover {
+    background-color: #0056b3;
+}
+
+:host ::ng-deep .textLayer {
+    cursor: text !important;
+}
+
+:host ::ng-deep .page {
+    cursor: text !important;
+}
+
+:host ::ng-deep ngx-extended-pdf-viewer {
+    cursor: text !important;
+}
+
+/* Hide built-in editor toolbar/overlay */
+:host ::ng-deep #editorModeButtons,
+:host ::ng-deep #editorModeSeparator,
+:host ::ng-deep .editorParamsToolbar,
+:host ::ng-deep #editorHighlightParamsToolbar,
+:host ::ng-deep #editorFreeTextParamsToolbar,
+:host ::ng-deep #editorInkParamsToolbar,
+:host ::ng-deep #editorStampParamsToolbar {
+    display: none !important;
+}

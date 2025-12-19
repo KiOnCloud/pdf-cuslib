@@ -1,0 +1,5 @@
+@if (pdfSource()) {
+<ngx-extended-pdf-viewer #pdfViewer [src]="pdfSource()!" [showToolbar]="false" [textLayer]="true"
+    [handTool]="handToolMode()" [showHandToolButton]="false" [enableDragAndDrop]="false"
+    (pagesLoaded)="onPagesLoaded($event)" (pageRendered)="onPageRendered($event)" />
+}
