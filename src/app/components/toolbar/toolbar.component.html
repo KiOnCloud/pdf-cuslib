@@ -1,0 +1,101 @@
+<div class="toolbar">
+    <!-- Zoom Controls -->
+    <div class="toolbar-group">
+        <button (click)="zoomOut()" [disabled]="!isLoaded()">-</button>
+        <span>{{ zoomLevel() }}%</span>
+        <button (click)="zoomIn()" [disabled]="!isLoaded()">+</button>
+    </div>
+
+    <!-- Hand Tool / Select Mode -->
+    <div class="toolbar-group">
+        <button (click)="toggleHandTool()" [class.active]="handToolMode()" [disabled]="!isLoaded()">
+            {{ handToolMode() ? 'Hand Tool' : 'Select Mode' }}
+        </button>
+    </div>
+
+    <!-- Undo/Redo -->
+    <div class="toolbar-group">
+        <button (click)="onUndo()" [disabled]="!isLoaded()" title="Undo">Undo</button>
+        <button (click)="onRedo()" [disabled]="!isLoaded()" title="Redo">Redo</button>
+    </div>
+
+    <!-- Page Navigation -->
+    <div class="toolbar-group">
+        <button (click)="previousPage()" [disabled]="!isLoaded()">Previous</button>
+        <input type="number" [(ngModel)]="pageInput" (keyup.enter)="goToPage()" [disabled]="!isLoaded()" min="1"
+            [max]="totalPages()" />
+        <span>/ {{ totalPages() }}</span>
+        <button (click)="nextPage()" [disabled]="!isLoaded()">Next</button>
+    </div>
+
+    <!-- Actions -->
+    <div class="toolbar-group">
+        <button (click)="onPrint()" [disabled]="!isLoaded()">Print</button>
+        <button (click)="onDownload()" [disabled]="!isLoaded()">Download</button>
+        <button (click)="onExportAnnotations()" [disabled]="!isLoaded()">Export</button>
+        <button (click)="fileInput.click()" [disabled]="!isLoaded()">Import</button>
+        <input #fileInput type="file" accept=".json" hidden (change)="onImportAnnotations($event)" />
+    </div>
+
+    <!-- Annotations -->
+    <div class="toolbar-group">
+        <button (click)="toggleHighlight()" [class.active]="highlightMode()" [disabled]="!isLoaded()">
+            Highlight
+        </button>
+        @if (highlightMode()) {
+        <label>Color:</label>
+        <button class="color-swatch" [class.active]="highlightColor === '#FFFF98'" [style.background-color]="'#FFFF98'"
+            (click)="selectColor('#FFFF98')" title="Yellow">
+        </button>
+        <button class="color-swatch" [class.active]="highlightColor === '#53FFBC'" [style.background-color]="'#53FFBC'"
+            (click)="selectColor('#53FFBC')" title="Green">
+        </button>
+        <button class="color-swatch" [class.active]="highlightColor === '#80EBFF'" [style.background-color]="'#80EBFF'"
+            (click)="selectColor('#80EBFF')" title="Cyan">
+        </button>
+        <button class="color-swatch" [class.active]="highlightColor === '#FFCBE6'" [style.background-color]="'#FFCBE6'"
+            (click)="selectColor('#FFCBE6')" title="Pink">
+        </button>
+        <button class="color-swatch" [class.active]="highlightColor === '#FF4F5F'" [style.background-color]="'#FF4F5F'"
+            (click)="selectColor('#FF4F5F')" title="Red">
+        </button>
+        }
+    </div>
+
+    <!-- Text Box Annotations -->
+    <div class="toolbar-group">
+        <button (click)="toggleTextBox()" [class.active]="textBoxMode()" [disabled]="!isLoaded()">
+            Text Box
+        </button>
+        @if (textBoxMode()) {
+        <label>Size:</label>
+        <select [value]="textBoxFontSize" (change)="selectFontSize($event)" title="Font Size">
+            <option value="10">10pt</option>
+            <option value="12">12pt</option>
+            <option value="14">14pt</option>
+            <option value="16">16pt</option>
+            <option value="18">18pt</option>
+            <option value="20">20pt</option>
+            <option value="24">24pt</option>
+            <option value="28">28pt</option>
+            <option value="32">32pt</option>
+        </select>
+        <label>Color:</label>
+        <button class="color-swatch" [class.active]="textBoxFontColor === '#000000'"
+            [style.background-color]="'#000000'" (click)="selectFontColor('#000000')" title="Black">
+        </button>
+        <button class="color-swatch" [class.active]="textBoxFontColor === '#FF0000'"
+            [style.background-color]="'#FF0000'" (click)="selectFontColor('#FF0000')" title="Red">
+        </button>
+        <button class="color-swatch" [class.active]="textBoxFontColor === '#0000FF'"
+            [style.background-color]="'#0000FF'" (click)="selectFontColor('#0000FF')" title="Blue">
+        </button>
+        <button class="color-swatch" [class.active]="textBoxFontColor === '#008000'"
+            [style.background-color]="'#008000'" (click)="selectFontColor('#008000')" title="Green">
+        </button>
+        <button class="color-swatch" [class.active]="textBoxFontColor === '#FFA500'"
+            [style.background-color]="'#FFA500'" (click)="selectFontColor('#FFA500')" title="Orange">
+        </button>
+        }
+    </div>
+</div>
